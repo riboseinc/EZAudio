@@ -534,10 +534,17 @@ typedef struct
 - (void)displayLinkNeedsDisplay:(EZAudioDisplayLink *)displayLink
 {
 #if TARGET_OS_IPHONE
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-    {
+// TODO Ribose: to allow usage of normal App and also App Extension. Temporary
+// hack to make it work for App Extensions for now.
+//    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+//    {
+//        [self display];
+//    }
+    if ([[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]) {
+        // this is an app extension
         [self display];
     }
+
 #elif TARGET_OS_MAC
     [self redraw];
 #endif
